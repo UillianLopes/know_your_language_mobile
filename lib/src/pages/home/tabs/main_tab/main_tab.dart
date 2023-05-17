@@ -3,9 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/pages/home/home_page_controller.dart';
 import 'package:know_your_language/src/pages/home/widgets/ranking/ranking.dart';
-import '../../../../core/models/ranking_item_model.dart';
+
 import '../../../../widgets/custom_card.dart';
-import '../../widgets/ranking_item/ranking_item.dart';
 
 class MainTab extends GetView<HomePageController> {
   const MainTab({super.key});

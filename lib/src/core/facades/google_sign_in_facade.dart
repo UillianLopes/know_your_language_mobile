@@ -1,4 +1,3 @@
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:know_your_language/src/core/contracts/facades/isign_in_facade.dart';
@@ -10,17 +9,14 @@ class GoogleSignInFacade with TokenOnStorageMixin implements ISignInFacade {
   GoogleSignInFacade(this._googleSignIn);
 
   @override
-  Future<bool> checkAndSignIn() async {
-    if (await _googleSignIn.isSignedIn()) {
-      return await checkToken(canSignIn: true);
-    } else {
-      return await _signInAndCheckToken();
-    }
-  }
+  Future<bool> checkAndSignIn({canSignIn = true}) async {
+    final isAlreadySignedIn = await _checkToken();
 
-  @override
-  Future<String?> getToken() {
-    return Future.value(getTokenFromStorage());
+    if (isAlreadySignedIn || !canSignIn) {
+      return isAlreadySignedIn;
+    }
+
+    return await _signInAndCheckToken();
   }
 
   @override
@@ -34,22 +30,19 @@ class GoogleSignInFacade with TokenOnStorageMixin implements ISignInFacade {
     return true;
   }
 
-  @override
-  Future<bool> checkToken({bool canSignIn = false}) async {
+  Future<bool> _checkToken() async {
     var currentUser = _googleSignIn.currentUser;
+
     if (currentUser == null) {
-      currentUser = await _googleSignIn.signInSilently();
-      if (currentUser == null) {
-        Get.snackbar('Erro', 'Não foi possivel se authenticar com o google');
-        await Future.delayed(2000.ms);
-
-        if (canSignIn) {
-          return await _signInAndCheckToken();
-        }
-
+      if (!await _googleSignIn.isSignedIn()) {
         return false;
       }
+
+      currentUser = await _googleSignIn.signInSilently();
+
+      if (currentUser == null) return false;
     }
+
     await _loadTokenFromAccountAndSaveOnStorage(currentUser);
     return true;
   }
@@ -64,14 +57,13 @@ class GoogleSignInFacade with TokenOnStorageMixin implements ISignInFacade {
       return false;
     }
 
-    return await saveTokenOnStorage(token) &&
-        await saveMethodOnStoage(SignInMethod.google);
+    return await saveTokenOnStorage(SignInMethod.google, token);
   }
 
   Future<bool> _signInAndCheckToken() async {
     try {
       await _googleSignIn.signIn();
-      return await checkToken();
+      return await _checkToken();
     } catch (e) {
       Get.snackbar('Error', 'O correu um erro ao tentar se authenticar');
       return false;

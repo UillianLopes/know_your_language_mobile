@@ -5,14 +5,22 @@ import 'package:know_your_language/src/core/contracts/facades/istorage_facade.da
 import '../../enums/sign_in_method.dart';
 
 mixin TokenOnStorageMixin {
-  (String, SignInMethod) getTokenFromStorage() {
+  (String?, SignInMethod?) getTokenFromStorage() {
     final storageFacade = Get.find<IStorageFacade>();
-    return ('', SignInMethod.apple);
+    SignInMethod? method;
+    final methodIndex = storageFacade.getInt(StoreKeys.authenticationMethod);
+
+    if (methodIndex != null) method = SignInMethod.values[methodIndex];
+
+    return (
+      storageFacade.getString(StoreKeys.authenticationToken),
+      method,
+    );
   }
 
   Future<bool> saveTokenOnStorage(SignInMethod method, String token) async {
     final storageFacade = Get.find<IStorageFacade>();
-    await storageFacade.setInt(StoreKeys.authenticationMethod, method as int);
+    await storageFacade.setInt(StoreKeys.authenticationMethod, method.index);
     await storageFacade.setString(StoreKeys.authenticationToken, token);
     return true;
   }
@@ -26,15 +34,13 @@ mixin TokenOnStorageMixin {
 }
 
 abstract class ISignInFacade {
-  Future<bool> checkAndSignIn();
-
-  Future<bool> checkToken({bool canSignIn = false});
+  Future<bool> checkAndSignIn({bool canSignIn = true});
 
   Future<bool> checkAndSignOut();
-
-  Future<String?> getToken();
 }
 
 abstract class IMultiSignInFacade implements ISignInFacade {
   use(SignInMethod method);
+
+  Future<(String? token, SignInMethod? method)> getTokenAndMethod();
 }

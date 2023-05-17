@@ -1,63 +1,53 @@
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:know_your_language/src/core/constants/store_keys.dart';
-import 'package:know_your_language/src/core/contracts/facades/istorage_facade.dart';
+import 'package:know_your_language/src/core/contracts/facades/isign_in_facade.dart';
 import 'package:know_your_language/src/core/contracts/providers/iusers_provider.dart';
+import 'package:know_your_language/src/core/enums/sign_in_method.dart';
 import 'package:know_your_language/src/core/models/user_model.dart';
 
-class AuthStore extends GetxController {
-  final GoogleSignIn _googleSignIn;
-  final IStorageFacade _storageFacade;
+class AuthStore extends GetxController with TokenOnStorageMixin {
+  final IMultiSignInFacade _signInFacade;
   final IUsersProvider _usersProvider;
   final user$ = Rx<UserModel?>(null);
 
-  AuthStore(this._googleSignIn, this._storageFacade, this._usersProvider);
+  AuthStore(this._signInFacade, this._usersProvider);
 
-  Future<void> signInWithGoogle() async {
-    if (await _googleSignIn.isSignedIn()) {
-      await checkSignedUserWithGoogle(canCallSignIn: true);
+  Future<bool> signOut() async {
+    return await _signInFacade.checkAndSignOut();
+  }
+
+  Future<void> initialize() async {
+    final (_, method) = getTokenFromStorage();
+
+    if (method == null) {
+      Get.offAndToNamed('/sign-in');
+      return;
+    }
+
+    _signInFacade.use(method);
+    final isSignedIn = await _signInFacade.checkAndSignIn(canSignIn: false);
+    await _handleSignedIn(isSignedIn);
+  }
+
+  Future<void> signIn(SignInMethod method) async {
+    _signInFacade.use(method);
+    final isSignedIn = await _signInFacade.checkAndSignIn();
+    await _handleSignedIn(isSignedIn);
+  }
+
+  Future<void> _handleSignedIn(bool isSignedIn) async {
+    if (isSignedIn) {
+      await _loadUser();
+      Get.offAndToNamed('/home');
     } else {
-      await _signInWithGoogle();
+      Get.offAndToNamed('/sign-in');
     }
   }
 
-  Future<bool> checkSignedUserWithGoogle({canCallSignIn = false}) async {
-    var currentUser = _googleSignIn.currentUser;
-    if (currentUser == null) {
-      currentUser = await _googleSignIn.signInSilently();
-      if (currentUser == null) {
-        Get.snackbar('Erro', 'Não foi possivel se authenticar com o google');
-        await Future.delayed(2000.ms);
-        if (canCallSignIn) {
-          await _signInWithGoogle();
-          return await checkSignedUserWithGoogle(canCallSignIn: false);
-        }
-
-        return false;
-      }
-    }
-
-    final signInAuthentication = await currentUser.authentication;
-    final idToken = signInAuthentication.idToken;
-
-    if (idToken != null) {
-      _storageFacade.setString(StoreKeys.authenticationToken, idToken);
-    }
-
+  Future<void> _loadUser() async {
     final response = await _usersProvider.currentUser();
-    user$.value = response?.data;
-    return true;
-  }
-
-  Future<void> _signInWithGoogle() async {
-    try {
-      await _googleSignIn.signIn();
-      await checkSignedUserWithGoogle();
-    } catch (e) {
-      Get.snackbar('Error', 'O correu um erro ao tentar se authenticar');
+    if (response == null) {
+      return;
     }
+    user$.value = response.data;
   }
-
-  _signOutFromGoogle() {}
 }

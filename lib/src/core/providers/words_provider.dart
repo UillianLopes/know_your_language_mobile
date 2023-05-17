@@ -1,4 +1,4 @@
-import 'package:know_your_language/flavors.dart';
+import 'package:know_your_language/environment.dart';
 
 import 'package:know_your_language/src/core/models/response.dart';
 import 'package:know_your_language/src/core/contracts/providers/abstracts/with_auth_provider.dart';
@@ -7,13 +7,11 @@ import '../contracts/providers/iwords_provider.dart';
 import '../models/word_model.dart';
 
 class WordsProvider extends WithAuthProvider implements IWordsProvider {
-  WordsProvider(super.storageFacade);
-
   @override
   Future<ListResponse<WordModel>?> getKnownWords(GetWordsModel query) async {
     try {
       final resposne = await get<ListResponse<WordModel>>(
-        '${Flavors.apiUrl}words/known',
+        '${Environment.apiUrl}words/known',
         query: query.toJson(),
       );
 
@@ -31,7 +29,7 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   Future<ListResponse<WordModel>?> getUnknownWords(GetWordsModel query) async {
     try {
       final resposne = await get<ListResponse<WordModel>>(
-        '${Flavors.apiUrl}words/known',
+        '${Environment.apiUrl}words/known',
         query: query.toJson(),
       );
 

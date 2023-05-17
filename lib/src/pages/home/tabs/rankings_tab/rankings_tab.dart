@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:know_your_language/src/pages/home/tabs/rankings_tab/rankings_tab_controller.dart';
 import 'package:know_your_language/src/pages/home/widgets/ranking/ranking.dart';
 import 'package:know_your_language/src/widgets/custom_card.dart';
-import 'package:rive/rive.dart';
 
 class RankingsTab extends GetView<RankingsTabController> {
   const RankingsTab({super.key});

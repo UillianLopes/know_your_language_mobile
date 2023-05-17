@@ -1,18 +1,17 @@
-import 'package:know_your_language/src/core/constants/store_keys.dart';
+import 'package:know_your_language/src/core/contracts/facades/isign_in_facade.dart';
 
 import '../../facades/istorage_facade.dart';
 import 'parallel_provider.dart';
 
-abstract class WithAuthProvider extends ParallelProvider {
-  final IStorageFacade _storageFacade;
-
-  WithAuthProvider(this._storageFacade) : super();
+abstract class WithAuthProvider extends ParallelProvider
+    with TokenOnStorageMixin {
+  WithAuthProvider() : super();
 
   @override
   void onInit() async {
     super.onInit();
     httpClient.addRequestModifier<Object?>((request) {
-      final token = _storageFacade.getString(StoreKeys.authenticationToken);
+      final (token, _) = getTokenFromStorage();
 
       if (token != null) {
         request.headers['Authorization'] = 'Bearer $token';

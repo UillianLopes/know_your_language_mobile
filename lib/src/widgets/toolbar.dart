@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/core/stores/auth_store.dart';
 
-class Toolbar extends StatelessWidget with PreferredSizeWidget {
+class Toolbar extends StatelessWidget implements PreferredSizeWidget {
   final AuthStore controller = Get.find();
+  final bool canOpenProfilePage;
 
-  Toolbar({super.key});
-
+  Toolbar({super.key, this.canOpenProfilePage = true});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,20 +52,25 @@ class Toolbar extends StatelessWidget with PreferredSizeWidget {
               ),
             ],
           ),
-          Obx(
-            () {
-              final picture = controller.user$.value?.picture;
-
-              return ClipOval(
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  color: Colors.teal[500],
-                  child:
-                      picture != null ? Image.network(picture) : const Text(''),
-                ),
-              );
+          GestureDetector(
+            onTap: () {
+              if (canOpenProfilePage) Get.toNamed('/profile');
             },
+            child: Obx(
+              () {
+                final picture = controller.user$.value?.picture;
+                return ClipOval(
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    color: Colors.teal[500],
+                    child: picture != null
+                        ? Image.network(picture)
+                        : const Text(''),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

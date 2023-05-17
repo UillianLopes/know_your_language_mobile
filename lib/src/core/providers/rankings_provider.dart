@@ -3,16 +3,14 @@ import 'package:know_your_language/src/core/contracts/providers/irankings_provid
 import 'package:know_your_language/src/core/models/response.dart';
 import 'package:know_your_language/src/core/models/ranking_item_model.dart';
 
-import '../../../flavors.dart';
+import '../../../environment.dart';
 
 class RankingsProvider extends WithAuthProvider implements IRankingsProvider {
-  RankingsProvider(super.storageFacade);
-
   @override
   Future<ListResponse<RankingItemModel>?> getDailyRanking() async {
     try {
       final response = await get<ListResponse<RankingItemModel>>(
-        '${Flavors.apiUrl}/rankings/daily',
+        '${Environment.apiUrl}/rankings/daily',
       );
 
       if (!response.isOk) {
@@ -29,7 +27,7 @@ class RankingsProvider extends WithAuthProvider implements IRankingsProvider {
   Future<ListResponse<RankingItemModel>?> getWeeklyRanking() async {
     try {
       final response = await get<ListResponse<RankingItemModel>>(
-        '${Flavors.apiUrl}/rankings/weekly',
+        '${Environment.apiUrl}/rankings/weekly',
       );
 
       if (!response.isOk) {
@@ -46,7 +44,7 @@ class RankingsProvider extends WithAuthProvider implements IRankingsProvider {
   Future<ListResponse<RankingItemModel>?> getMonthlyRanking() async {
     try {
       final response = await get<ListResponse<RankingItemModel>>(
-        '${Flavors.apiUrl}/rankings/monthly',
+        '${Environment.apiUrl}/rankings/monthly',
       );
 
       if (!response.isOk) {
@@ -63,7 +61,7 @@ class RankingsProvider extends WithAuthProvider implements IRankingsProvider {
   Future<ListResponse<RankingItemModel>?> getYearlyRanking() async {
     try {
       final response = await get<ListResponse<RankingItemModel>>(
-        '${Flavors.apiUrl}/rankings/yearly',
+        '${Environment.apiUrl}/rankings/yearly',
       );
 
       if (!response.isOk) {

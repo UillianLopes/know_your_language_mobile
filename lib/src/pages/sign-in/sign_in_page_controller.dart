@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:know_your_language/src/core/enums/sign_in_method.dart';
 import 'package:know_your_language/src/core/stores/auth_store.dart';
 
 class SignInPageController extends GetxController {
@@ -8,7 +9,7 @@ class SignInPageController extends GetxController {
     this._authControler,
   );
 
-  signInWithGoogle() async {
-    await _authControler.signInWithGoogle();
+  signIn(SignInMethod method) async {
+    await _authControler.signIn(method);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:know_your_language/src/core/enums/sign_in_method.dart';
 import 'package:know_your_language/src/pages/sign-in/sign_in_page_controller.dart';
-import 'package:know_your_language/src/widgets/toolbar.dart';
 
 import '../../widgets/custom_safe_area.dart';
 
@@ -12,7 +12,6 @@ class SignInPage extends GetView<SignInPageController> {
   Widget build(BuildContext context) {
     return CustomSafeArea(
       child: Scaffold(
-        appBar: Toolbar(),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(16),
@@ -20,7 +19,7 @@ class SignInPage extends GetView<SignInPageController> {
               children: [
                 FilledButton(
                   onPressed: () {
-                    controller.signInWithGoogle();
+                    controller.signIn(SignInMethod.google);
                   },
                   child: const Text(
                     'Entrar com google',

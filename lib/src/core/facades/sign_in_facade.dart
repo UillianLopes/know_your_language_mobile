@@ -2,7 +2,7 @@ import 'package:know_your_language/src/core/enums/sign_in_method.dart';
 
 import '../contracts/facades/isign_in_facade.dart';
 
-class SignInFacade implements IMultiSignInFacade {
+class SignInFacade with TokenOnStorageMixin implements IMultiSignInFacade {
   SignInMethod _method = SignInMethod.google;
 
   final ISignInFacade _googleSignInFacade;
@@ -14,25 +14,19 @@ class SignInFacade implements IMultiSignInFacade {
   );
 
   @override
-  Future<bool> checkAndSignIn() async {
+  Future<bool> checkAndSignIn({bool canSignIn = true}) async {
     switch (_method) {
       case SignInMethod.google:
-        return await _googleSignInFacade.checkAndSignIn();
+        return await _googleSignInFacade.checkAndSignIn(canSignIn: canSignIn);
 
       case SignInMethod.apple:
-        return await _appleSignInFacade.checkAndSignIn();
+        return await _appleSignInFacade.checkAndSignIn(canSignIn: canSignIn);
     }
   }
 
   @override
-  Future<String?> getToken() async {
-    switch (_method) {
-      case SignInMethod.google:
-        return await _googleSignInFacade.getToken();
-
-      case SignInMethod.apple:
-        return await _appleSignInFacade.getToken();
-    }
+  Future<(String? token, SignInMethod? method)> getTokenAndMethod() async {
+    return await Future.value(getTokenFromStorage());
   }
 
   @override
@@ -49,16 +43,5 @@ class SignInFacade implements IMultiSignInFacade {
   @override
   use(SignInMethod method) {
     _method = method;
-  }
-
-  @override
-  Future<bool> checkToken({bool canSignIn = false}) async {
-    switch (_method) {
-      case SignInMethod.google:
-        return await _googleSignInFacade.checkToken(canSignIn: canSignIn);
-
-      case SignInMethod.apple:
-        return await _appleSignInFacade.checkToken(canSignIn: canSignIn);
-    }
   }
 }

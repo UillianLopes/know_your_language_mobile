@@ -5,22 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "program": "lib/main_local.dart",
+      "program": "lib/main.dart",
       "name": "know_your_language (local)",
       "request": "launch",
-      "type": "dart"
-    },
-    {
-      "name": "know_your_language (profile mode)",
-      "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "know_your_language (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release"
+      "args": [
+        "--dart-define-from-file",
+        "environments/local.json"
+      ]
     }
   ]
 }

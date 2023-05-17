@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:know_your_language/src/core/bindings/core_bindings.dart';
 import 'package:know_your_language/src/pages/home/home_page.dart';
 import 'package:know_your_language/src/pages/home/home_page_bindings.dart';
+import 'package:know_your_language/src/pages/profile/profile_page.dart';
+import 'package:know_your_language/src/pages/profile/profile_page_bindings.dart';
 import 'package:know_your_language/src/pages/sign-in/sign_in_page.dart';
 import 'package:know_your_language/src/pages/sign-in/sign_in_page_bindings.dart';
 import 'package:know_your_language/src/pages/splash/splash_page.dart';
@@ -46,6 +48,11 @@ class KnowYourLanguageApp extends StatelessWidget {
           ),
           binding: WordsPageBindings(),
         ),
+        GetPage(
+          name: '/profile',
+          page: () => const ProfilePage(),
+          binding: ProfilePageBindings(),
+        )
       ],
     );
   }

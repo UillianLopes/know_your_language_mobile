@@ -1,11 +1,11 @@
-import '../../../flavors.dart';
+import '../../../environment.dart';
 import '../models/response.dart';
 import '../models/user_model.dart';
 import '../contracts/providers/abstracts/with_auth_provider.dart';
 import '../contracts/providers/iusers_provider.dart';
 
 class UsersProvider extends WithAuthProvider implements IUsersProvider {
-  UsersProvider(super.storageFacade);
+  UsersProvider();
 
   @override
   Future<ListResponse<UserModel>?> getAllUsers() async {
@@ -24,7 +24,7 @@ class UsersProvider extends WithAuthProvider implements IUsersProvider {
   Future<SingleResponse<UserModel>?> currentUser() async {
     try {
       final response = await get<SingleResponse<UserModel>?>(
-        '${Flavors.apiUrl}users/profile',
+        '${Environment.apiUrl}users/profile',
         decoder: (response) {
           return SingleResponse<UserModel>.fromJson(
             response,
