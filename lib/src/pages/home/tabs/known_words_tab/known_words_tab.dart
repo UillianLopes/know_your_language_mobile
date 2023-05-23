@@ -10,6 +10,7 @@ class KnownWordsTab extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(children: [
         CustomCard(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           child: Column(
             children: const [
               Text('THIS IS A TEST'),

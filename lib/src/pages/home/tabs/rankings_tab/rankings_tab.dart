@@ -9,6 +9,7 @@ class RankingsTab extends GetView<RankingsTabController> {
 
   CustomCard _buildEmptyData(BuildContext context) {
     return CustomCard(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -21,7 +22,9 @@ class RankingsTab extends GetView<RankingsTabController> {
           ),
           Text(
             'Sem dados suficientes...',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
           ),
         ],
       ),

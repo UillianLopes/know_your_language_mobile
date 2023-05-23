@@ -11,12 +11,21 @@ class SingleResponse<T> extends _Response {
 
   factory SingleResponse.fromJson(
     Map<String, dynamic> json,
-    T? Function(Map<String, dynamic>?) decoder,
+    T? Function(dynamic) decoder,
   ) {
     return SingleResponse(
       message: json['message'],
       data: decoder(json['data']),
     );
+  }
+
+  toJson(
+    Map<String, dynamic>? Function(T?) encoder,
+  ) {
+    return {
+      'message': message,
+      'data': data != null ? encoder(data) : null,
+    };
   }
 }
 

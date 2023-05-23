@@ -9,6 +9,39 @@ import '../../../../widgets/custom_card.dart';
 class MainTab extends GetView<HomePageController> {
   const MainTab({super.key});
 
+  _buildGameModeCard(
+    BuildContext context, {
+    required IconData icon,
+    required String content,
+    required Function() onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: CustomCard(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              size: 48,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              content,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,6 +63,7 @@ class MainTab extends GetView<HomePageController> {
                 controller.animateToPage(2);
               },
               child: CustomCard(
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 child: Column(
                   children: [
                     Row(
@@ -40,7 +74,7 @@ class MainTab extends GetView<HomePageController> {
                               child: Container(
                                 height: 80,
                                 width: 80,
-                                color: Theme.of(context).colorScheme.background,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                             SizedBox(
@@ -65,7 +99,14 @@ class MainTab extends GetView<HomePageController> {
                               Text(
                                 'Palavras conhecidas',
                                 softWrap: true,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
+                                    ),
                               ),
                               const SizedBox(
                                 height: 16,
@@ -75,8 +116,14 @@ class MainTab extends GetView<HomePageController> {
                                 children: [
                                   Text(
                                     '100/10000',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                        ),
                                   )
                                 ],
                               )
@@ -104,37 +151,28 @@ class MainTab extends GetView<HomePageController> {
             Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
+                  child: _buildGameModeCard(
+                    context,
+                    content: 'Qual é a palavra?',
+                    icon: Icons.edit,
                     onTap: () {
                       Get.toNamed(
                         '/words',
                         arguments: {
-                          'mode': 'howItIsWritten',
+                          'mode': 'guessTheWord',
                         },
                       );
                     },
-                    child: CustomCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Icon(
-                            Icons.edit,
-                            size: 48,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text('Como é escrita?'),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
                 const SizedBox(
                   width: 15,
                 ),
                 Expanded(
-                  child: GestureDetector(
+                  child: _buildGameModeCard(
+                    context,
+                    content: 'O que significa?',
+                    icon: Icons.book,
                     onTap: () {
                       Get.toNamed(
                         '/words',
@@ -143,21 +181,6 @@ class MainTab extends GetView<HomePageController> {
                         },
                       );
                     },
-                    child: CustomCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Icon(
-                            Icons.book,
-                            size: 48,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text('O que significa?'),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ],
@@ -165,17 +188,6 @@ class MainTab extends GetView<HomePageController> {
             const SizedBox(
               height: 16,
             ),
-            Text(
-              "Ranking da semana",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const Ranking(items: []),
-            const SizedBox(
-              height: 92,
-            )
           ],
         ),
       ),

@@ -15,6 +15,7 @@ class Ranking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       child: SizedBox(
         height: 400,
         child: SingleChildScrollView(

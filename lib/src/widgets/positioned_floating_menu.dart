@@ -39,6 +39,7 @@ class _PositionedFloatingMenuState extends State<PositionedFloatingMenu>
   int? _prevSelectedIndex;
 
   late AnimationController _animationController;
+  late Animation<Color> _color;
 
   @override
   void initState() {
@@ -95,7 +96,7 @@ class _PositionedFloatingMenuState extends State<PositionedFloatingMenu>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(widget.itemSize),
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primaryContainer,
         ),
         padding: EdgeInsets.all(widget.padding),
         child: Stack(
@@ -109,7 +110,7 @@ class _PositionedFloatingMenuState extends State<PositionedFloatingMenu>
                     width: widget.itemSize,
                     height: widget.itemSize,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).canvasColor,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(widget.itemSize / 2),
                     ),
                   ),
@@ -136,7 +137,12 @@ class _PositionedFloatingMenuState extends State<PositionedFloatingMenu>
                     child: SizedBox(
                       width: widget.itemSize,
                       height: widget.itemSize,
-                      child: Icon(item.icon),
+                      child: Icon(
+                        item.icon,
+                        color: _selectedIndex == widget.items.indexOf(item)
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
                 ),

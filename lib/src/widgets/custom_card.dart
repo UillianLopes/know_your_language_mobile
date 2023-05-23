@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   final Widget child;
+  final Color backgroundColor;
 
   const CustomCard({
     super.key,
+    required this.backgroundColor,
     required this.child,
   });
 
@@ -14,7 +16,7 @@ class CustomCard extends StatelessWidget {
       borderRadius: const BorderRadius.all(Radius.circular(16)),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        color: Theme.of(context).cardColor,
+        color: backgroundColor,
         padding: const EdgeInsets.all(16),
         child: child,
       ),

@@ -24,12 +24,8 @@ class Toolbar extends StatelessWidget implements PreferredSizeWidget {
           Row(
             children: [
               if (Navigator.canPop(context)) ...[
-                GestureDetector(
+                InkWell(
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white10),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
                     child: const Padding(
                       padding: EdgeInsets.all(4.0),
                       child: Icon(

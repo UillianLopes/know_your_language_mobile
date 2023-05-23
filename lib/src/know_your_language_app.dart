@@ -12,6 +12,8 @@ import 'package:know_your_language/src/pages/splash/splash_page_bindings.dart';
 import 'package:know_your_language/src/pages/words/words_page.dart';
 import 'package:know_your_language/src/pages/words/words_page_bindings.dart';
 
+import 'know_your_language_app_theme.dart';
+
 class KnowYourLanguageApp extends StatelessWidget {
   const KnowYourLanguageApp({super.key});
 
@@ -21,8 +23,14 @@ class KnowYourLanguageApp extends StatelessWidget {
       initialBinding: CoreBindings(),
       initialRoute: '/splash',
       defaultTransition: Transition.cupertino,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: lightColorScheme,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: darkColorScheme,
+      ),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       getPages: [

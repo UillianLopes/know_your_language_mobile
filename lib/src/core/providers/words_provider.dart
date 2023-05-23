@@ -26,11 +26,58 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   }
 
   @override
-  Future<ListResponse<WordModel>?> getUnknownWords(GetWordsModel query) async {
+  Future<SingleResponse<WordModel>?> getUnknownWord() async {
     try {
-      final resposne = await get<ListResponse<WordModel>>(
-        '${Environment.apiUrl}words/known',
-        query: query.toJson(),
+      final resposne = await get<SingleResponse<WordModel>>(
+        '${Environment.apiUrl}users/words/unknown',
+        decoder: (response) {
+          return SingleResponse<WordModel>.fromJson(
+            response,
+            (data) {
+              if (data == null) {
+                return null;
+              }
+
+              return WordModel.fromJson(data);
+            },
+          );
+        },
+      );
+
+      if (!resposne.isOk) {
+        return null;
+      }
+
+      return resposne.body;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<SingleResponse<int?>?> markAWordAsKnow(
+    int wordId,
+    int points,
+  ) async {
+    try {
+      final resposne = await post<SingleResponse<int?>>(
+        '${Environment.apiUrl}users/words/known',
+        {
+          'wordId': wordId,
+          'points': points,
+        },
+        decoder: (response) {
+          return SingleResponse<int?>.fromJson(
+            response,
+            (data) {
+              if (data == null) {
+                return null;
+              }
+
+              return data as int;
+            },
+          );
+        },
       );
 
       if (!resposne.isOk) {
