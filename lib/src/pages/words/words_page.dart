@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/pages/words/words_page_controller.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 import 'package:know_your_language/src/widgets/custom_safe_area.dart';
-import 'package:know_your_language/src/widgets/meaning_option.dart';
+import 'package:know_your_language/src/widgets/selection_list/selection_list.dart';
 import 'package:know_your_language/src/widgets/toolbar.dart';
 
 class WordsPage extends GetView<WordsPageController> {
@@ -38,115 +39,59 @@ class WordsPage extends GetView<WordsPageController> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text.rich(
-                    TextSpan(
-                      text: 'Você sabe o que significa a palavra ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                      children: [
-                        TextSpan(
-                          text: word.value,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        const TextSpan(
-                          text: '?',
-                        )
-                      ],
-                    ),
+                  Text(
+                    'Você sabe o que significa?',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      word.value.toLowerCase(),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          ),
+                    ),
+                  )
+                      .animate(
+                        onPlay: (controller) => controller.repeat(),
+                      )
+                      .shimmer(
+                        delay: 2000.ms,
+                        duration: 200.ms,
+                      ),
                   const SizedBox(
                     height: 16,
                   ),
                   Expanded(
-                    child: ListView.separated(
-                      itemCount: word.meanings.length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 16.0,
-                      ),
-                      itemBuilder: (context, index) {
-                        final meaning = word.meanings[index];
-                        return Obx(() {
-                          final selectedIndex = controller.selectedIndex$.value;
-                          final isDefined = controller.isDefined$.value;
-                          return MeaningOption(
-                            key: Key('meaing_option_${meaning.id}'),
-                            meaning: meaning,
-                            onTap: () {
-                              if (controller.isDefined$.value) {
-                                return;
-                              }
-                              controller.select(index);
-                            },
-                            isSelected: selectedIndex == index,
-                            isOptionDefined: isDefined,
-                          );
-                        });
-                      },
+                    child: SelectionList(
+                      controller: controller.meaningsController,
+                      builder: (context, item) => Text(item.value),
+                      placeholder: const Text('Lista vazia...'),
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Obx(() {
-                        final isDefined = controller.isDefined$.value;
-                        final isCorrect = controller.isCorrect$.value;
-                        final isLoading = controller.isLoading$.value;
+                      Obx(
+                        () {
+                          final isLoading = controller.isLoading$.value;
 
-                        if (isDefined) {
-                          if (isCorrect) {
-                            return Column(
-                              children: [
-                                Text(
-                                  'Meus parabéns, Você acertou! 🎉',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                CustomButton(
-                                  onTap: () {
-                                    controller.resetState();
-                                    controller.loadWord();
-                                  },
-                                  text: 'Próxima palavra',
-                                )
-                              ],
-                            );
-                          }
-
-                          return Column(
-                            children: [
-                              Text(
-                                'Infelizmente você errou! 😢',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              CustomButton(
-                                onTap: () {
-                                  controller.resetState();
-                                  controller.loadWord();
-                                },
-                                text: 'Próxima palavra',
-                              )
-                            ],
+                          return CustomButton(
+                            onTap: () {
+                              controller.confirm();
+                            },
+                            text: 'Confirmar',
+                            disabled: isLoading,
                           );
-                        }
-
-                        return CustomButton(
-                          onTap: () {
-                            controller.define();
-                          },
-                          text: 'Confirmar',
-                          disabled: isDefined || isLoading,
-                        );
-                      })
+                        },
+                      )
                     ],
                   ),
                   const SizedBox(

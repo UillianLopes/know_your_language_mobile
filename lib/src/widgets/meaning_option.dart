@@ -9,7 +9,17 @@ class MeaningOption extends StatelessWidget {
   final bool isSelected;
   final bool isOptionDefined;
 
-  const MeaningOption({
+  final checkedIcon = Icon(
+    Icons.radio_button_checked,
+    key: UniqueKey(),
+  );
+
+  final uncheckedIcon = Icon(
+    Icons.radio_button_unchecked,
+    key: UniqueKey(),
+  );
+
+  MeaningOption({
     super.key,
     required this.meaning,
     required this.onTap,
@@ -50,15 +60,7 @@ class MeaningOption extends StatelessWidget {
           children: [
             AnimatedSwitcher(
               duration: 200.ms,
-              child: isSelected
-                  ? Icon(
-                      Icons.radio_button_checked,
-                      key: UniqueKey(),
-                    )
-                  : Icon(
-                      Icons.radio_button_unchecked,
-                      key: UniqueKey(),
-                    ),
+              child: isSelected ? checkedIcon : uncheckedIcon,
             ),
             const SizedBox(
               width: 16,

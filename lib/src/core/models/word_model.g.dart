@@ -25,10 +25,57 @@ WordModel _$WordModelFromJson(Map<String, dynamic> json) => WordModel(
       meanings: (json['meanings'] as List<dynamic>)
           .map((e) => MeaningModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      incorrectAttempts: json['incorrectAttempts'] as int?,
     );
 
 Map<String, dynamic> _$WordModelToJson(WordModel instance) => <String, dynamic>{
       'id': instance.id,
+      'incorrectAttempts': instance.incorrectAttempts,
       'value': instance.value,
       'meanings': instance.meanings,
+    };
+
+GetWordsPayload _$GetWordsPayloadFromJson(Map<String, dynamic> json) =>
+    GetWordsPayload(
+      filter: json['filter'] as String,
+      page: json['page'] as int,
+    );
+
+Map<String, dynamic> _$GetWordsPayloadToJson(GetWordsPayload instance) =>
+    <String, dynamic>{
+      'filter': instance.filter,
+      'page': instance.page,
+    };
+
+MarkWordAsKnowPayload _$MarkWordAsKnowPayloadFromJson(
+        Map<String, dynamic> json) =>
+    MarkWordAsKnowPayload(
+      wordId: json['wordId'] as int,
+      meaningId: json['meaningId'] as int?,
+      force: json['force'] as bool?,
+    );
+
+Map<String, dynamic> _$MarkWordAsKnowPayloadToJson(
+        MarkWordAsKnowPayload instance) =>
+    <String, dynamic>{
+      'wordId': instance.wordId,
+      'meaningId': instance.meaningId,
+      'force': instance.force,
+    };
+
+MarkWordAsKnowModel _$MarkWordAsKnowModelFromJson(Map<String, dynamic> json) =>
+    MarkWordAsKnowModel(
+      completed: json['completed'] as bool,
+      correctMeaningId: json['correctMeaningId'] as int?,
+      score: json['score'] as int?,
+      incorrectAttempts: json['incorrectAttempts'] as int?,
+    );
+
+Map<String, dynamic> _$MarkWordAsKnowModelToJson(
+        MarkWordAsKnowModel instance) =>
+    <String, dynamic>{
+      'correctMeaningId': instance.correctMeaningId,
+      'score': instance.score,
+      'completed': instance.completed,
+      'incorrectAttempts': instance.incorrectAttempts,
     };

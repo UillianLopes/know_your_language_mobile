@@ -8,7 +8,7 @@ import '../models/word_model.dart';
 
 class WordsProvider extends WithAuthProvider implements IWordsProvider {
   @override
-  Future<ListResponse<WordModel>?> getKnownWords(GetWordsModel query) async {
+  Future<ListResponse<WordModel>?> getKnownWords(GetWordsPayload query) async {
     try {
       final resposne = await get<ListResponse<WordModel>>(
         '${Environment.apiUrl}words/known',
@@ -55,26 +55,22 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   }
 
   @override
-  Future<SingleResponse<int?>?> markAWordAsKnow(
-    int wordId,
-    int points,
+  Future<SingleResponse<MarkWordAsKnowModel?>?> markAWordAsKnow(
+    MarkWordAsKnowPayload payload,
   ) async {
     try {
-      final resposne = await post<SingleResponse<int?>>(
+      final resposne = await post<SingleResponse<MarkWordAsKnowModel?>>(
         '${Environment.apiUrl}users/words/known',
-        {
-          'wordId': wordId,
-          'points': points,
-        },
+        payload.toJson(),
         decoder: (response) {
-          return SingleResponse<int?>.fromJson(
+          return SingleResponse<MarkWordAsKnowModel?>.fromJson(
             response,
             (data) {
               if (data == null) {
                 return null;
               }
 
-              return data as int;
+              return MarkWordAsKnowModel.fromJson(data);
             },
           );
         },

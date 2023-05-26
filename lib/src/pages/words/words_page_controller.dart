@@ -1,19 +1,27 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:know_your_language/src/core/constants/store_keys.dart';
+import 'package:know_your_language/src/core/contracts/facades/istorage_facade.dart';
 import 'package:know_your_language/src/core/models/word_model.dart';
 
 import '../../core/contracts/providers/iwords_provider.dart';
+import '../../widgets/selection_list/selection_list_controller.dart';
+import 'guess_the_word_meaning/guess_the_word_meaning.dart';
 
 class WordsPageController extends GetxController {
-  final IWordsProvider _wordsProvider;
-  final word$ = Rx<WordModel?>(null);
-  final selectedIndex$ = Rx<int?>(null);
-  final isDefined$ = false.obs;
-  final isLoading$ = false.obs;
-  final isCorrect$ = false.obs;
-  final isUpdating$ = false.obs;
+  final meaningsController = SelectionListController<MeaningModel>();
 
-  WordsPageController(this._wordsProvider);
+  final IWordsProvider _wordsProvider;
+  final IStorageFacade _storeFacade;
+  final word$ = Rx<WordModel?>(null);
+  final isLoading$ = false.obs;
+  final isUpdating$ = false.obs;
+  final isIncorrect$ = false.obs;
+  final count$ = 0.obs;
+
+  WordsPageController(this._wordsProvider, this._storeFacade);
 
   @override
   Future<void> onInit() async {
@@ -21,65 +29,165 @@ class WordsPageController extends GetxController {
     await loadWord();
   }
 
-  resetState() {
+  void reset() {
     word$.value = null;
-    selectedIndex$.value = null;
-    isDefined$.value = false;
     isLoading$.value = false;
-    isCorrect$.value = false;
     isUpdating$.value = false;
+    meaningsController.reset();
   }
 
   Future<void> loadWord() async {
     isLoading$.value = true;
+
     try {
       final response = await _wordsProvider.getUnknownWord();
+
       word$.value = response?.data;
+
+      final word = word$.value;
+
+      if (word != null) {
+        final incorrectAnswers = await _getIncorrectAnswers(word.id);
+        final incorrectIndexes = word.meanings
+            .where((element) => incorrectAnswers.contains(element.id))
+            .map((e) => word.meanings.indexOf(e))
+            .toList();
+        meaningsController.seed(
+          word.meanings,
+          incorrectIndexes,
+        );
+      }
     } finally {
       isLoading$.value = false;
     }
   }
 
-  void select(int index) {
-    final meanings = word$.value?.meanings;
+  tryAgain() {
+    isIncorrect$.value = false;
+  }
 
-    if (meanings == null || meanings.isEmpty) {
+  Future<void> confirm({bool? force = false}) async {
+    final index = meaningsController.selectedIndex$.value;
+
+    if (index == null) {
       return;
     }
 
-    selectedIndex$.value = index;
-  }
-
-  Future<void> define() async {
     final word = word$.value;
 
     if (word == null) {
       return;
     }
 
-    final selectedIndex = selectedIndex$.value;
-
-    if (selectedIndex == null) {
+    if (index >= word.meanings.length) {
       return;
     }
 
-    final meaning = word.meanings[selectedIndex];
-    final isCorrect = !meaning.isFake;
+    final meaning = word.meanings[index];
 
-    isUpdating$.value = true;
-    try {
-      final response =
-          await _wordsProvider.markAWordAsKnow(word.id, isCorrect ? 10 : 0);
+    final response = await _wordsProvider.markAWordAsKnow(MarkWordAsKnowPayload(
+      wordId: word.id,
+      meaningId: meaning.id,
+      force: force,
+    ));
 
-      if (response == null) {
-        return;
-      }
+    final data = response?.data;
 
-      isCorrect$.value = isCorrect;
-      isDefined$.value = true;
-    } catch (e) {
-    } finally {
-      isUpdating$.value = false;
+    if (data == null) {
+      return;
     }
+
+    if (data.completed) {
+      final meaning = word.meanings
+          .where((element) => element.id == data.correctMeaningId)
+          .first;
+
+      meaningsController.complete(
+        correctIndex: word.meanings.indexOf(meaning),
+      );
+    } else {
+      meaningsController.markCurretIndexAsIncorrect();
+      await _pushIncorrectAnswers(word.id, meaning.id);
+      isIncorrect$.value = true;
+    }
+
+    final result = await Get.dialog<String?>(
+      GessTheWordResult(
+        result: data,
+      ),
+      barrierDismissible: false,
+    );
+
+    switch (result) {
+      case 'nextWord':
+        await nextWord();
+        break;
+    }
+  }
+
+  Future<void> nextWord() async {
+    reset();
+    await loadWord();
+  }
+
+  Future<void> _pushIncorrectAnswers(int wordId, int meaningId) async {
+    final incorrectAnswersJson = _storeFacade.getString(
+      StoreKeys.incorrectAnswers,
+    );
+
+    if (incorrectAnswersJson == null) {
+      await _storeFacade.setString(
+        StoreKeys.incorrectAnswers,
+        jsonEncode({
+          'wordId': wordId,
+          'incorrectAnswers': [meaningId]
+        }),
+      );
+      return;
+    }
+
+    final incorrectAnswers = jsonDecode(incorrectAnswersJson);
+
+    if (incorrectAnswers['wordId'] == wordId) {
+      final incorrectAnswer = incorrectAnswers['incorrectAnswers'] as List<int>;
+      await _storeFacade.setString(
+        StoreKeys.incorrectAnswers,
+        jsonEncode({
+          'wordId': wordId,
+          'incorrectAnswers': [...incorrectAnswer, meaningId]
+        }),
+      );
+      return;
+    }
+
+    await _storeFacade.setString(
+      StoreKeys.incorrectAnswers,
+      jsonEncode({
+        'wordId': wordId,
+        'incorrectAnswers': [meaningId]
+      }),
+    );
+  }
+
+  Future<List<int>> _getIncorrectAnswers(int wordId) async {
+    final incorrectAnswersJson = _storeFacade.getString(
+      StoreKeys.incorrectAnswers,
+    );
+
+    if (incorrectAnswersJson == null) {
+      return [];
+    }
+
+    final incorrectAnswersDynamic = jsonDecode(incorrectAnswersJson);
+
+    if (incorrectAnswersDynamic['wordId'] != wordId) {
+      await _storeFacade.remove(StoreKeys.incorrectAnswers);
+      return [];
+    }
+
+    final incorrectAnswers =
+        ((incorrectAnswersDynamic['incorrectAnswers'] as List<dynamic>) ?? []);
+
+    return incorrectAnswers.map((e) => e as int).toList();
   }
 }

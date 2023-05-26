@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/pages/home/home_page_controller.dart';
-import 'package:know_your_language/src/pages/home/widgets/ranking/ranking.dart';
 
 import '../../../../widgets/custom_card.dart';
 
