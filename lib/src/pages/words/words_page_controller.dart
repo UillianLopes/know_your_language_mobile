@@ -111,8 +111,10 @@ class WordsPageController extends GetxController {
       isIncorrect$.value = true;
     }
 
+    print(jsonEncode(data));
+
     final result = await Get.dialog<String?>(
-      GessTheWordResult(
+      GessTheWordMeaningResult(
         result: data,
       ),
       barrierDismissible: false,
@@ -120,6 +122,14 @@ class WordsPageController extends GetxController {
 
     switch (result) {
       case 'nextWord':
+        await nextWord();
+        break;
+      case 'incorrectNextWord':
+        await _wordsProvider.markAWordAsKnow(MarkWordAsKnowPayload(
+          wordId: word.id,
+          meaningId: meaning.id,
+          force: true,
+        ));
         await nextWord();
         break;
     }

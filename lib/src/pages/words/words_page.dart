@@ -79,18 +79,20 @@ class WordsPage extends GetView<WordsPageController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Obx(
-                        () {
-                          final isLoading = controller.isLoading$.value;
+                      Expanded(
+                        child: Obx(
+                          () {
+                            final isLoading = controller.isLoading$.value;
 
-                          return CustomButton(
-                            onTap: () {
-                              controller.confirm();
-                            },
-                            text: 'Confirmar',
-                            disabled: isLoading,
-                          );
-                        },
+                            return CustomButton(
+                              onTap: () {
+                                controller.confirm();
+                              },
+                              text: 'Confirmar',
+                              disabled: isLoading,
+                            );
+                          },
+                        ),
                       )
                     ],
                   ),

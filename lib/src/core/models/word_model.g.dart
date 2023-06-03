@@ -69,13 +69,15 @@ MarkWordAsKnowModel _$MarkWordAsKnowModelFromJson(Map<String, dynamic> json) =>
       correctMeaningId: json['correctMeaningId'] as int?,
       score: json['score'] as int?,
       incorrectAttempts: json['incorrectAttempts'] as int?,
+      meaningId: json['meaningId'] as int?,
     );
 
 Map<String, dynamic> _$MarkWordAsKnowModelToJson(
         MarkWordAsKnowModel instance) =>
     <String, dynamic>{
       'correctMeaningId': instance.correctMeaningId,
+      'meaningId': instance.meaningId,
       'score': instance.score,
-      'completed': instance.completed,
       'incorrectAttempts': instance.incorrectAttempts,
+      'completed': instance.completed,
     };

@@ -77,7 +77,7 @@ class MarkWordAsKnowPayload {
 @JsonSerializable()
 class MarkWordAsKnowModel {
   final int? correctMeaningId;
-  final int? meaingId;
+  final int? meaningId;
   final int? score;
   final int? incorrectAttempts;
   final bool completed;
@@ -87,7 +87,7 @@ class MarkWordAsKnowModel {
     this.correctMeaningId,
     this.score,
     this.incorrectAttempts,
-    this.meaingId,
+    this.meaningId,
   });
 
   factory MarkWordAsKnowModel.fromJson(Map<String, dynamic> json) =>

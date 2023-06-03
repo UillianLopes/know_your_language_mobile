@@ -5,17 +5,17 @@ import 'package:know_your_language/src/core/extensions/color_scheme_extensions.d
 import 'package:know_your_language/src/core/models/word_model.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 
-class GessTheWordResult extends StatelessWidget {
+class GessTheWordMeaningResult extends StatelessWidget {
   final MarkWordAsKnowModel result;
 
-  const GessTheWordResult({
+  const GessTheWordMeaningResult({
     super.key,
     required this.result,
   });
 
   Container _buildIsCorrectModal(BuildContext context) {
     return Container(
-      width: 250,
+      width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(8.0),
@@ -42,14 +42,30 @@ class GessTheWordResult extends StatelessWidget {
               '+${result.score} pontos',
               style: Theme.of(context).textTheme.titleSmall,
             ),
-            CustomButton(
-              onTap: () async {
-                await Future.delayed(200.ms);
-                Get.back(
-                  result: 'nextWord',
-                );
-              },
-              text: 'Pular',
+            Row(
+              children: [
+                CustomButton(
+                  icon: Icons.arrow_back,
+                  onTap: () {
+                    Get.back();
+                    Get.back();
+                  },
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: CustomButton(
+                    onTap: () async {
+                      await Future.delayed(200.ms);
+                      Get.back(
+                        result: 'nextWord',
+                      );
+                    },
+                    text: 'Próxima',
+                  ),
+                ),
+              ],
             )
           ],
         ),
@@ -59,12 +75,12 @@ class GessTheWordResult extends StatelessWidget {
 
   Container _buildIsIncorrectModal(BuildContext context) {
     return Container(
-      width: 250,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(32.0),
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,20 +95,48 @@ class GessTheWordResult extends StatelessWidget {
           ),
           Text(
             'Você errou',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(
+            height: 16.0,
           ),
           Row(
             children: [
+              CustomButton(
+                onTap: () {
+                  Get.back();
+                  Get.back();
+                },
+                icon: Icons.arrow_back,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              if (!result.completed) ...[
+                CustomButton(
+                  onTap: () {
+                    Get.back();
+                  },
+                  icon: Icons.refresh,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+              ],
               Expanded(
                 child: CustomButton(
-                  onTap: () async {
-                    await Future.delayed(200.ms);
-                    Get.back(
-                      result: 'nextWord',
-                    );
-                  },
-                  text: 'Próxima palavra (+0pts)',
-                ),
+                    onTap: () async {
+                      await Future.delayed(200.ms);
+                      Get.back(
+                        result: 'incorrectNextWord',
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        'Próxima (+0 pt)',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    )),
               ),
             ],
           )
@@ -103,7 +147,7 @@ class GessTheWordResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCorrect = result.meaingId != result.correctMeaningId;
+    final isCorrect = result.meaningId == result.correctMeaningId;
     final widget = isCorrect
         ? _buildIsCorrectModal(context)
         : _buildIsIncorrectModal(context);
