@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/core/enums/sign_in_method.dart';
-import 'package:know_your_language/src/pages/sign-in/sign_in_page_controller.dart';
+import 'package:know_your_language/src/pages/sign_in/sign_in_page_controller.dart';
 
 import '../../widgets/custom_safe_area.dart';
 

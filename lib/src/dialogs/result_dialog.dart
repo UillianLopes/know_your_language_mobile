@@ -5,10 +5,10 @@ import 'package:know_your_language/src/core/extensions/color_scheme_extensions.d
 import 'package:know_your_language/src/core/models/word_model.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 
-class GessTheWordMeaningResult extends StatelessWidget {
+class ResultDialog extends StatelessWidget {
   final MarkWordAsKnowModel result;
 
-  const GessTheWordMeaningResult({
+  const ResultDialog({
     super.key,
     required this.result,
   });
@@ -41,6 +41,9 @@ class GessTheWordMeaningResult extends StatelessWidget {
             Text(
               '+${result.score} pontos',
               style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(
+              height: 16,
             ),
             Row(
               children: [
@@ -133,7 +136,7 @@ class GessTheWordMeaningResult extends StatelessWidget {
                     },
                     child: Center(
                       child: Text(
-                        'Próxima (+0 pt)',
+                        'Próxima',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     )),

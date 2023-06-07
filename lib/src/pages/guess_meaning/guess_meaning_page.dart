@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:know_your_language/src/pages/words/words_page_controller.dart';
+import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_controller.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 import 'package:know_your_language/src/widgets/custom_safe_area.dart';
 import 'package:know_your_language/src/widgets/selection_list/selection_list.dart';
 import 'package:know_your_language/src/widgets/toolbar.dart';
 
-class WordsPage extends GetView<WordsPageController> {
-  final Map<String, String?>? parameters;
-
-  const WordsPage({super.key, this.parameters});
+class GuessMeaningPage extends GetView<GuessMeaningPageController> {
+  const GuessMeaningPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +69,7 @@ class WordsPage extends GetView<WordsPageController> {
                   ),
                   Expanded(
                     child: SelectionList(
-                      controller: controller.meaningsController,
+                      controller: controller.meaningsListController,
                       builder: (context, item) => Text(item.value),
                       placeholder: const Text('Lista vazia...'),
                     ),

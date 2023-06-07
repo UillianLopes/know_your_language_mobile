@@ -8,20 +8,21 @@ import 'package:know_your_language/src/core/models/word_model.dart';
 
 import '../../core/contracts/providers/iwords_provider.dart';
 import '../../widgets/selection_list/selection_list_controller.dart';
-import 'guess_the_word_meaning/guess_the_word_meaning.dart';
+import '../../dialogs/result_dialog.dart';
 
-class WordsPageController extends GetxController {
-  final meaningsController = SelectionListController<MeaningModel>();
+class GuessMeaningPageController extends GetxController {
+  final meaningsListController = SelectionListController<MeaningModel>();
 
   final IWordsProvider _wordsProvider;
   final IStorageFacade _storeFacade;
+
   final word$ = Rx<WordModel?>(null);
+  final count$ = 0.obs;
   final isLoading$ = false.obs;
   final isUpdating$ = false.obs;
   final isIncorrect$ = false.obs;
-  final count$ = 0.obs;
 
-  WordsPageController(this._wordsProvider, this._storeFacade);
+  GuessMeaningPageController(this._wordsProvider, this._storeFacade);
 
   @override
   Future<void> onInit() async {
@@ -33,7 +34,7 @@ class WordsPageController extends GetxController {
     word$.value = null;
     isLoading$.value = false;
     isUpdating$.value = false;
-    meaningsController.reset();
+    meaningsListController.reset();
   }
 
   Future<void> loadWord() async {
@@ -52,7 +53,7 @@ class WordsPageController extends GetxController {
             .where((element) => incorrectAnswers.contains(element.id))
             .map((e) => word.meanings.indexOf(e))
             .toList();
-        meaningsController.seed(
+        meaningsListController.seed(
           word.meanings,
           incorrectIndexes,
         );
@@ -67,7 +68,7 @@ class WordsPageController extends GetxController {
   }
 
   Future<void> confirm({bool? force = false}) async {
-    final index = meaningsController.selectedIndex$.value;
+    final index = meaningsListController.selectedIndex$.value;
 
     if (index == null) {
       return;
@@ -102,11 +103,11 @@ class WordsPageController extends GetxController {
           .where((element) => element.id == data.correctMeaningId)
           .first;
 
-      meaningsController.complete(
+      meaningsListController.complete(
         correctIndex: word.meanings.indexOf(meaning),
       );
     } else {
-      meaningsController.markCurretIndexAsIncorrect();
+      meaningsListController.markCurretIndexAsIncorrect();
       await _pushIncorrectAnswers(word.id, meaning.id);
       isIncorrect$.value = true;
     }
@@ -114,7 +115,7 @@ class WordsPageController extends GetxController {
     print(jsonEncode(data));
 
     final result = await Get.dialog<String?>(
-      GessTheWordMeaningResult(
+      ResultDialog(
         result: data,
       ),
       barrierDismissible: false,

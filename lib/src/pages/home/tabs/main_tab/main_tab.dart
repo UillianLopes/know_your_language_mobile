@@ -155,12 +155,7 @@ class MainTab extends GetView<HomePageController> {
                     content: 'Qual é a palavra?',
                     icon: Icons.edit,
                     onTap: () {
-                      Get.toNamed(
-                        '/words',
-                        arguments: {
-                          'mode': 'guessTheWord',
-                        },
-                      );
+                      Get.toNamed('/guess-word');
                     },
                   ),
                 ),
@@ -173,12 +168,7 @@ class MainTab extends GetView<HomePageController> {
                     content: 'O que significa?',
                     icon: Icons.book,
                     onTap: () {
-                      Get.toNamed(
-                        '/words',
-                        arguments: {
-                          'mode': 'whatDoesThatWordMean',
-                        },
-                      );
+                      Get.toNamed('/guess-meaning');
                     },
                   ),
                 ),

@@ -29,7 +29,7 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   Future<SingleResponse<WordModel>?> getUnknownWord() async {
     try {
       final resposne = await get<SingleResponse<WordModel>>(
-        '${Environment.apiUrl}users/words/unknown',
+        '${Environment.apiUrl}words/unknown',
         decoder: (response) {
           return SingleResponse<WordModel>.fromJson(
             response,
@@ -60,7 +60,7 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   ) async {
     try {
       final resposne = await post<SingleResponse<MarkWordAsKnowModel?>>(
-        '${Environment.apiUrl}users/words/known',
+        '${Environment.apiUrl}words/known',
         payload.toJson(),
         decoder: (response) {
           return SingleResponse<MarkWordAsKnowModel?>.fromJson(

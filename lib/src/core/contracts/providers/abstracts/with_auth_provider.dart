@@ -12,10 +12,11 @@ abstract class WithAuthProvider extends ParallelProvider
     timeout = 30.seconds;
     httpClient.timeout = 30.seconds;
     httpClient.addRequestModifier<Object?>((request) {
-      final (token, _) = getTokenFromStorage();
+      final (token, signInMethod) = getTokenFromStorage();
 
-      if (token != null) {
-        request.headers['Authorization'] = 'Bearer $token';
+      if (token != null && signInMethod != null) {
+        request.headers['sign-in-method'] = signInMethod.name;
+        request.headers['authorization'] = 'Bearer $token';
       }
 
       return request;

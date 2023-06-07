@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/core/bindings/core_bindings.dart';
+import 'package:know_your_language/src/pages/guess_word/guess_word_page.dart';
+import 'package:know_your_language/src/pages/guess_word/guess_word_page_bindings.dart';
 import 'package:know_your_language/src/pages/home/home_page.dart';
 import 'package:know_your_language/src/pages/home/home_page_bindings.dart';
 import 'package:know_your_language/src/pages/profile/profile_page.dart';
 import 'package:know_your_language/src/pages/profile/profile_page_bindings.dart';
-import 'package:know_your_language/src/pages/sign-in/sign_in_page.dart';
-import 'package:know_your_language/src/pages/sign-in/sign_in_page_bindings.dart';
+import 'package:know_your_language/src/pages/sign_in/sign_in_page.dart';
+import 'package:know_your_language/src/pages/sign_in/sign_in_page_bindings.dart';
 import 'package:know_your_language/src/pages/splash/splash_page.dart';
 import 'package:know_your_language/src/pages/splash/splash_page_bindings.dart';
-import 'package:know_your_language/src/pages/words/words_page.dart';
-import 'package:know_your_language/src/pages/words/words_page_bindings.dart';
+import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_page.dart';
+import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_bindings.dart';
 
 import 'know_your_language_app_theme.dart';
 
@@ -50,11 +52,14 @@ class KnowYourLanguageApp extends StatelessWidget {
           binding: HomePageBindings(),
         ),
         GetPage(
-          name: '/words',
-          page: () => WordsPage(
-            parameters: Get.arguments,
-          ),
-          binding: WordsPageBindings(),
+          name: '/guess-meaning',
+          page: () => const GuessMeaningPage(),
+          binding: GuessMeaningPageBindings(),
+        ),
+        GetPage(
+          name: '/guess-word',
+          page: () => const GuessWordPage(),
+          binding: GuessWordPageBindings(),
         ),
         GetPage(
           name: '/profile',
