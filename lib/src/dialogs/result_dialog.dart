@@ -6,7 +6,7 @@ import 'package:know_your_language/src/core/models/word_model.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 
 class ResultDialog extends StatelessWidget {
-  final MarkWordAsKnowModel result;
+  final GuessMeaningResponseModel result;
 
   const ResultDialog({
     super.key,

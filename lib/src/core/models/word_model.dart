@@ -57,32 +57,32 @@ class GetWordsPayload {
 }
 
 @JsonSerializable()
-class MarkWordAsKnowPayload {
+class GuessMeaningPayloadModel {
   final int wordId;
   final int? meaningId;
   final bool? force;
 
-  const MarkWordAsKnowPayload({
+  const GuessMeaningPayloadModel({
     required this.wordId,
     this.meaningId,
     this.force,
   });
 
-  factory MarkWordAsKnowPayload.fromJson(Map<String, dynamic> json) =>
-      _$MarkWordAsKnowPayloadFromJson(json);
+  factory GuessMeaningPayloadModel.fromJson(Map<String, dynamic> json) =>
+      _$GuessMeaningPayloadModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MarkWordAsKnowPayloadToJson(this);
+  Map<String, dynamic> toJson() => _$GuessMeaningPayloadModelToJson(this);
 }
 
 @JsonSerializable()
-class MarkWordAsKnowModel {
+class GuessMeaningResponseModel {
   final int? correctMeaningId;
   final int? meaningId;
   final int? score;
   final int? incorrectAttempts;
   final bool completed;
 
-  const MarkWordAsKnowModel({
+  const GuessMeaningResponseModel({
     required this.completed,
     this.correctMeaningId,
     this.score,
@@ -90,8 +90,8 @@ class MarkWordAsKnowModel {
     this.meaningId,
   });
 
-  factory MarkWordAsKnowModel.fromJson(Map<String, dynamic> json) =>
-      _$MarkWordAsKnowModelFromJson(json);
+  factory GuessMeaningResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$GuessMeaningResponseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MarkWordAsKnowModelToJson(this);
+  Map<String, dynamic> toJson() => _$GuessMeaningResponseModelToJson(this);
 }

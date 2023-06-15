@@ -86,7 +86,7 @@ class GuessMeaningPageController extends GetxController {
 
     final meaning = word.meanings[index];
 
-    final response = await _wordsProvider.markAWordAsKnow(MarkWordAsKnowPayload(
+    final response = await _wordsProvider.guessMeaning(GuessMeaningPayloadModel(
       wordId: word.id,
       meaningId: meaning.id,
       force: force,
@@ -126,7 +126,7 @@ class GuessMeaningPageController extends GetxController {
         await nextWord();
         break;
       case 'incorrectNextWord':
-        await _wordsProvider.markAWordAsKnow(MarkWordAsKnowPayload(
+        await _wordsProvider.guessMeaning(GuessMeaningPayloadModel(
           wordId: word.id,
           meaningId: meaning.id,
           force: true,

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class HomePageController extends GetxController {
   final PageController pageViewController = PageController();
-  RxInt currentTab = 0.obs;
+  RxInt currentTab$ = 0.obs;
 
   void animateToPage(int index) {
     pageViewController.animateToPage(
@@ -12,12 +12,13 @@ class HomePageController extends GetxController {
       duration: 200.ms,
       curve: Curves.linear,
     );
+    currentTab$.value = index;
   }
 
   @override
   void onInit() {
     if (pageViewController.hasClients) {
-      pageViewController.jumpToPage(currentTab.value);
+      pageViewController.jumpToPage(currentTab$.value);
     }
 
     super.onInit();

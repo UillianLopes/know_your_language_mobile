@@ -10,9 +10,9 @@ class GuessWordPageController extends GetxController {
   GuessWordPageController(this._wordsProvider);
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    loadWord();
+    await loadWord();
   }
 
   Future<void> loadWord() async {

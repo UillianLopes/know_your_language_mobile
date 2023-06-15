@@ -16,7 +16,7 @@ class AuthStore extends GetxController with TokenOnStorageMixin {
   }
 
   Future<void> initialize() async {
-    final (_, method) = getTokenFromStorage();
+    final (_, method) = await getTokenFromStorage();
 
     if (method == null) {
       Get.offAndToNamed('/sign-in');

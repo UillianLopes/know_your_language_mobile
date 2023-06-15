@@ -25,13 +25,11 @@ class Toolbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               if (Navigator.canPop(context)) ...[
                 InkWell(
-                  child: Container(
-                    child: const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 24,
-                      ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 24,
                     ),
                   ),
                   onTap: () {

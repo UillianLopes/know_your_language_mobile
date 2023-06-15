@@ -40,7 +40,6 @@ class SelectionListController<T> extends GetxController {
     }
 
     incorrectIndexes$.value = [...incorrectIndexes$.value, selectedIndex];
-
     selectedIndex$.value = null;
   }
 }

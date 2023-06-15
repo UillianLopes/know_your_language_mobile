@@ -11,8 +11,8 @@ abstract class WithAuthProvider extends ParallelProvider
     super.onInit();
     timeout = 30.seconds;
     httpClient.timeout = 30.seconds;
-    httpClient.addRequestModifier<Object?>((request) {
-      final (token, signInMethod) = getTokenFromStorage();
+    httpClient.addRequestModifier<Object?>((request) async {
+      final (token, signInMethod) = await getTokenFromStorage();
 
       if (token != null && signInMethod != null) {
         request.headers['sign-in-method'] = signInMethod.name;

@@ -55,22 +55,22 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
   }
 
   @override
-  Future<SingleResponse<MarkWordAsKnowModel?>?> markAWordAsKnow(
-    MarkWordAsKnowPayload payload,
+  Future<SingleResponse<GuessMeaningResponseModel?>?> guessMeaning(
+    GuessMeaningPayloadModel payload,
   ) async {
     try {
-      final resposne = await post<SingleResponse<MarkWordAsKnowModel?>>(
-        '${Environment.apiUrl}words/known',
+      final resposne = await post<SingleResponse<GuessMeaningResponseModel?>>(
+        '${Environment.apiUrl}words/guess-meaning',
         payload.toJson(),
         decoder: (response) {
-          return SingleResponse<MarkWordAsKnowModel?>.fromJson(
+          return SingleResponse<GuessMeaningResponseModel?>.fromJson(
             response,
             (data) {
               if (data == null) {
                 return null;
               }
 
-              return MarkWordAsKnowModel.fromJson(data);
+              return GuessMeaningResponseModel.fromJson(data);
             },
           );
         },

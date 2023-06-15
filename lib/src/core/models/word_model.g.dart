@@ -47,24 +47,25 @@ Map<String, dynamic> _$GetWordsPayloadToJson(GetWordsPayload instance) =>
       'page': instance.page,
     };
 
-MarkWordAsKnowPayload _$MarkWordAsKnowPayloadFromJson(
+GuessMeaningPayloadModel _$GuessMeaningPayloadModelFromJson(
         Map<String, dynamic> json) =>
-    MarkWordAsKnowPayload(
+    GuessMeaningPayloadModel(
       wordId: json['wordId'] as int,
       meaningId: json['meaningId'] as int?,
       force: json['force'] as bool?,
     );
 
-Map<String, dynamic> _$MarkWordAsKnowPayloadToJson(
-        MarkWordAsKnowPayload instance) =>
+Map<String, dynamic> _$GuessMeaningPayloadModelToJson(
+        GuessMeaningPayloadModel instance) =>
     <String, dynamic>{
       'wordId': instance.wordId,
       'meaningId': instance.meaningId,
       'force': instance.force,
     };
 
-MarkWordAsKnowModel _$MarkWordAsKnowModelFromJson(Map<String, dynamic> json) =>
-    MarkWordAsKnowModel(
+GuessMeaningResponseModel _$GuessMeaningResponseModelFromJson(
+        Map<String, dynamic> json) =>
+    GuessMeaningResponseModel(
       completed: json['completed'] as bool,
       correctMeaningId: json['correctMeaningId'] as int?,
       score: json['score'] as int?,
@@ -72,8 +73,8 @@ MarkWordAsKnowModel _$MarkWordAsKnowModelFromJson(Map<String, dynamic> json) =>
       meaningId: json['meaningId'] as int?,
     );
 
-Map<String, dynamic> _$MarkWordAsKnowModelToJson(
-        MarkWordAsKnowModel instance) =>
+Map<String, dynamic> _$GuessMeaningResponseModelToJson(
+        GuessMeaningResponseModel instance) =>
     <String, dynamic>{
       'correctMeaningId': instance.correctMeaningId,
       'meaningId': instance.meaningId,

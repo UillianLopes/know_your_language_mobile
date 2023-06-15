@@ -21,9 +21,6 @@ class HomePage extends GetView<HomePageController> {
           children: [
             PageView(
               controller: controller.pageViewController,
-              onPageChanged: (value) {
-                controller.currentTab.value = value;
-              },
               children: const [
                 MainTab(),
                 RankingsTab(),
@@ -34,7 +31,7 @@ class HomePage extends GetView<HomePageController> {
               return PositionedFloatingMenu(
                 bottom: 24,
                 itemSize: 45,
-                selectedIndex: controller.currentTab.value,
+                selectedIndex: controller.currentTab$.value,
                 onItemSelected: (index) {
                   controller.animateToPage(index);
                 },
