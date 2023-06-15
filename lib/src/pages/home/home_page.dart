@@ -4,10 +4,9 @@ import 'package:know_your_language/src/pages/home/home_page_controller.dart';
 import 'package:know_your_language/src/pages/home/tabs/known_words_tab/known_words_tab.dart';
 import 'package:know_your_language/src/pages/home/tabs/main_tab/main_tab.dart';
 import 'package:know_your_language/src/pages/home/tabs/rankings_tab/rankings_tab.dart';
-
-import '../../widgets/custom_safe_area.dart';
-import '../../widgets/positioned_floating_menu.dart';
-import '../../widgets/toolbar.dart';
+import 'package:know_your_language/src/widgets/custom_safe_area.dart';
+import 'package:know_your_language/src/widgets/positioned_floating_menu.dart';
+import 'package:know_your_language/src/widgets/toolbar.dart';
 
 class HomePage extends GetView<HomePageController> {
   const HomePage({super.key});

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
-import '../../../../core/models/ranking_item_model.dart';
+import 'package:know_your_language/src/core/models/ranking_item_model.dart';
 
 class RankingItem extends StatelessWidget {
   final RankingItemModel item;

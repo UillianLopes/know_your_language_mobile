@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_controller.dart';
+import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_page_controller.dart';
 import 'package:know_your_language/src/widgets/custom_button.dart';
 import 'package:know_your_language/src/widgets/custom_safe_area.dart';
 import 'package:know_your_language/src/widgets/selection_list/selection_list.dart';

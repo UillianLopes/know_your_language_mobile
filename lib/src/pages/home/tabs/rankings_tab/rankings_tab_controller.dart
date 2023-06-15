@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
 import 'package:know_your_language/src/core/contracts/providers/irankings_provider.dart';
+import 'package:know_your_language/src/core/models/ranking_item_model.dart';
 import 'package:know_your_language/src/core/models/response.dart';
-
-import '../../../../core/models/ranking_item_model.dart';
 
 class RankingsTabController extends GetxController {
   final IRankingsProvider _rankingsProvider;

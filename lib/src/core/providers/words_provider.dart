@@ -85,4 +85,36 @@ class WordsProvider extends WithAuthProvider implements IWordsProvider {
       return null;
     }
   }
+
+  @override
+  Future<SingleResponse<GuessWordResponseModel?>?> guessWord(
+    GuessWordPayloadModel payload,
+  ) async {
+    try {
+      final resposne = await post<SingleResponse<GuessWordResponseModel?>>(
+        '${Environment.apiUrl}words/guess-word',
+        payload.toJson(),
+        decoder: (response) {
+          return SingleResponse<GuessWordResponseModel?>.fromJson(
+            response,
+            (data) {
+              if (data == null) {
+                return null;
+              }
+
+              return GuessWordResponseModel.fromJson(data);
+            },
+          );
+        },
+      );
+
+      if (!resposne.isOk) {
+        return null;
+      }
+
+      return resposne.body;
+    } catch (e) {
+      return null;
+    }
+  }
 }

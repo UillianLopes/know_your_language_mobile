@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/pages/home/home_page_controller.dart';
-
-import '../../../../widgets/custom_card.dart';
+import 'package:know_your_language/src/widgets/custom_card.dart';
 
 class MainTab extends GetView<HomePageController> {
   const MainTab({super.key});

@@ -7,12 +7,12 @@ class HomePageController extends GetxController {
   RxInt currentTab$ = 0.obs;
 
   void animateToPage(int index) {
+    currentTab$.value = index;
     pageViewController.animateToPage(
       index,
       duration: 200.ms,
       curve: Curves.linear,
     );
-    currentTab$.value = index;
   }
 
   @override

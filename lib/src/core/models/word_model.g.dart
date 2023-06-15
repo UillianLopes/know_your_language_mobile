@@ -82,3 +82,35 @@ Map<String, dynamic> _$GuessMeaningResponseModelToJson(
       'incorrectAttempts': instance.incorrectAttempts,
       'completed': instance.completed,
     };
+
+GuessWordPayloadModel _$GuessWordPayloadModelFromJson(
+        Map<String, dynamic> json) =>
+    GuessWordPayloadModel(
+      wordId: json['wordId'] as int,
+      word: json['word'] as String,
+      force: json['force'] as bool?,
+    );
+
+Map<String, dynamic> _$GuessWordPayloadModelToJson(
+        GuessWordPayloadModel instance) =>
+    <String, dynamic>{
+      'wordId': instance.wordId,
+      'word': instance.word,
+      'force': instance.force,
+    };
+
+GuessWordResponseModel _$GuessWordResponseModelFromJson(
+        Map<String, dynamic> json) =>
+    GuessWordResponseModel(
+      completed: json['completed'] as bool,
+      score: json['score'] as int?,
+      incorrectAttempts: json['incorrectAttempts'] as int?,
+    );
+
+Map<String, dynamic> _$GuessWordResponseModelToJson(
+        GuessWordResponseModel instance) =>
+    <String, dynamic>{
+      'score': instance.score,
+      'incorrectAttempts': instance.incorrectAttempts,
+      'completed': instance.completed,
+    };

@@ -4,11 +4,10 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:know_your_language/src/core/constants/store_keys.dart';
 import 'package:know_your_language/src/core/contracts/facades/istorage_facade.dart';
+import 'package:know_your_language/src/core/contracts/providers/iwords_provider.dart';
 import 'package:know_your_language/src/core/models/word_model.dart';
-
-import '../../core/contracts/providers/iwords_provider.dart';
-import '../../widgets/selection_list/selection_list_controller.dart';
-import '../../dialogs/result_dialog.dart';
+import 'package:know_your_language/src/dialogs/result_dialog.dart';
+import 'package:know_your_language/src/widgets/selection_list/selection_list_controller.dart';
 
 class GuessMeaningPageController extends GetxController {
   final meaningsListController = SelectionListController<MeaningModel>();
@@ -111,8 +110,6 @@ class GuessMeaningPageController extends GetxController {
       await _pushIncorrectAnswers(word.id, meaning.id);
       isIncorrect$.value = true;
     }
-
-    print(jsonEncode(data));
 
     final result = await Get.dialog<String?>(
       ResultDialog(

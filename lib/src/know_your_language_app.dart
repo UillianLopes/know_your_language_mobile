@@ -12,7 +12,7 @@ import 'package:know_your_language/src/pages/sign_in/sign_in_page_bindings.dart'
 import 'package:know_your_language/src/pages/splash/splash_page.dart';
 import 'package:know_your_language/src/pages/splash/splash_page_bindings.dart';
 import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_page.dart';
-import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_bindings.dart';
+import 'package:know_your_language/src/pages/guess_meaning/guess_meaning_page_bindings.dart';
 
 import 'know_your_language_app_theme.dart';
 

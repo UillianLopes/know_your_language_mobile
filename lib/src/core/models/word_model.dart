@@ -95,3 +95,39 @@ class GuessMeaningResponseModel {
 
   Map<String, dynamic> toJson() => _$GuessMeaningResponseModelToJson(this);
 }
+
+@JsonSerializable()
+class GuessWordPayloadModel {
+  final int wordId;
+  final String word;
+  final bool? force;
+
+  const GuessWordPayloadModel({
+    required this.wordId,
+    required this.word,
+    this.force,
+  });
+
+  factory GuessWordPayloadModel.fromJson(Map<String, dynamic> json) =>
+      _$GuessWordPayloadModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GuessWordPayloadModelToJson(this);
+}
+
+@JsonSerializable()
+class GuessWordResponseModel {
+  final int? score;
+  final int? incorrectAttempts;
+  final bool completed;
+
+  const GuessWordResponseModel({
+    required this.completed,
+    this.score,
+    this.incorrectAttempts,
+  });
+
+  factory GuessWordResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$GuessWordResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GuessWordResponseModelToJson(this);
+}

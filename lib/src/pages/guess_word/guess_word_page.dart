@@ -66,7 +66,7 @@ class GuessWordPage extends GetView<GuessWordPageController> {
                         Expanded(
                           child: CustomButton(
                             onTap: () {},
-                            child: Center(child: Text('CONFIRMAR')),
+                            child: const Center(child: Text('CONFIRMAR')),
                           ),
                         ),
                       ],
